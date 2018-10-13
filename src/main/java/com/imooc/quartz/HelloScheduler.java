@@ -3,6 +3,8 @@ package com.imooc.quartz;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2018/10/11 0011.
  */
@@ -11,16 +13,22 @@ public class HelloScheduler {
         JobDetail jobDetail = JobBuilder
                 .newJob(MyJob.class)
                 .withIdentity("MyJobDetail", "Group1")
+                .usingJobData("name", "ycz")
+                .usingJobData("age", 15)
                 .build();
+
+        DateUtil.printCurrentTime();
 
         Trigger trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("MyJobTrigger", "Triggers")
-                .startNow()
+//                .startNow()
+                .startAt(new Date(new Date().getTime() + 5000))
                 .withSchedule(
                         SimpleScheduleBuilder
                                 .simpleSchedule()
-                                .repeatForever()
+//                                .repeatForever()
+                                .withRepeatCount(5)
                                 .withIntervalInSeconds(10))
                 .build();
 
